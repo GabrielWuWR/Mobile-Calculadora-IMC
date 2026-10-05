@@ -82,8 +82,15 @@ fun IMCScreen(modifier: Modifier = Modifier) {
         val alturaReal = altura.replace(',', '.').toDouble();
         val pesoReal = peso.replace(',', '.').toDouble();
 
-        if(pesoReal == null || pesoReal <= 20 || pesoReal >= 635 || alturaReal == null || alturaReal <= 1 && alturaReal >= 272) {
-            throw IllegalArgumentException("Peso e altura devem ser valores válidos.")
+        if(pesoReal == null || pesoReal <= 20 || pesoReal >= 635 || alturaReal == null || alturaReal <= 1 || alturaReal >= 2.72) {
+            if(alturaReal >= 100.00) {
+                val imcCalculo = pesoReal / (alturaReal / 100 * alturaReal / 100);
+
+                return imcCalculo.toBigDecimal().setScale(2, RoundingMode.HALF_UP).toDouble()
+            } else {
+                throw IllegalArgumentException("Peso e altura devem ser valores válidos.")
+            }
+
         } else {
             val imcCalculo = pesoReal / (alturaReal * alturaReal);
 
